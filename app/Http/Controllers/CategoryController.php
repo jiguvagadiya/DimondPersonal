@@ -21,22 +21,25 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+       $request->validate([
             'name' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'description' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
-        $data = $request->only(['name', 'description']);
-
-        if ($request->hasFile('image')) {
-            $filename = time() . '.' . $request->image->extension();
-            $request->image->storeAs('public/category_images', $filename);
-            $data['image'] = $filename;
+    
+        $input = $request->all();
+    
+        if ($image = $request->file('image')) {
+            $destinationPath = 'images/';
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $input['image'] = "$profileImage";
         }
-
-        Category::create($data);
-
-        return redirect()->route('categories.index')->with('success', 'Category created.');
+      
+        Category::create($input);
+       
+        return redirect()->route('categories.index')
+                         ->with('success', 'Category created successfully.');
     }
 
     public function edit(Category $category)
@@ -47,31 +50,36 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+             'name' => 'required',
+            'description' => 'required',
         ]);
-
-        $data = $request->only(['name', 'description']);
-
-        if ($request->hasFile('image')) {
-            // Optional: delete old image
-              if ($category->image && Storage::exists('public/category_images/' . $category->image)) {
-                Storage::delete('public/category_images/' . $category->image);
-            }
-
-            $filename = time() . '.' . $request->image->extension();
-            $request->image->storeAs('public/category_images', $filename);
-            $data['image'] = $filename;
+    
+        $input = $request->all();
+    
+        if ($image = $request->file('image')) {
+            $destinationPath = 'images/';
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $input['image'] = "$profileImage";
+        }else{
+            unset($input['image']);
         }
-
-        $category->update($data);
-
-        return redirect()->route('categories.index')->with('success', 'Category updated.');
+            
+        $category->update($input);
+      
+        return redirect()->route('categories.index')
+                         ->with('success', 'Category updated successfully');
     }
 
     public function destroy(Category $category)
     {
+        // Delete image from storage
+        if ($category->image && Storage::exists('public/category_images/' . $category->image)) {
+            Storage::delete('public/category_images/' . $category->image);
+        }
+
         $category->delete();
+
         return back()->with('success', 'Category deleted.');
     }
 }

@@ -29,7 +29,7 @@
                     
                     @if($category->image)
                         <img 
-                            src="{{ asset('storage/category_images/' . $category->image) }}" 
+                            src="{{ asset('images/' . $category->image) }}" 
                             alt="{{ $category->name }}" 
                             class="card-img-top" 
                             style="height: 180px; object-fit: cover;"
