@@ -29,7 +29,7 @@
                     
                     @if($category->image)
                         <img 
-                            src="{{ asset('images/' . $category->image) }}" 
+                            src="{{ asset('images/' . $category->image) }}"     
                             alt="{{ $category->name }}" 
                             class="card-img-top" 
                             style="height: 180px; object-fit: cover;"
@@ -40,8 +40,8 @@
                             alt="No Image" 
                             class="card-img-top" 
                             style="height: 180px; object-fit: cover;"
-                        >
-                    @endif
+                        >         
+                    @endif   
 
                     <div class="card-body d-flex flex-column text-center">
                         <h5 class="card-title text-primary fw-bold mb-2">{{ $category->name }}</h5>
