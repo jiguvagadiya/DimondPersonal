@@ -17,6 +17,8 @@ Route::get('/categories', [SiteController::class, 'categories'])->name('categori
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::resource('admin/categories', CategoryController::class);
+    Route::get('contact-us', [ContactController::class, 'index']);
+    Route::post('contact-us', [ContactController::class, 'store'])->name('contact.us.store');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

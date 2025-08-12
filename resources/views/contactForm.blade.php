@@ -33,20 +33,28 @@
                 <div class="col-md-6">
                     <div class="bg-white p-4 rounded shadow-sm">
                         <h5 class="fw-bold text-primary mb-4">Send a Message</h5>
-                        <form action="{{ route('contact.send') }}" method="POST">
+                       
+                        <form action="{{ route('contact.us.store') }}" id="contactUSForm" method="POST">
                             @csrf
                             @if (session('success'))
                                 <div class="alert alert-success">{{ session('success') }}</div>
                             @endif
 
                             <div class="mb-3">
-                                <input type="text" class="form-control" name="name" placeholder="Your Name" required>
+                                <input type="text" class="form-control" name="name" placeholder="Your Name"  value="{{ old('name') }}" required>
+                                 @error('name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="mb-3">
-                                <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                                <input type="email" class="form-control" name="email" placeholder="Your Email"  value="{{ old('email') }}" required>
+                                 @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="mb-3">
-                                <textarea class="form-control" name="message" rows="4" placeholder="Your Message" required></textarea>
+                                <input type="phone" class="form-control" name="phone" placeholder="Your Phone"  value="{{ old('phone') }}" required>
+                                 @error('phone') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" name="message" rows="4" placeholder="Your Message"  value="{{ old('message') }}" required></textarea>
+                                 @error('message') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Send Message</button>
                         </form>

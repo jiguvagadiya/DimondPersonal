@@ -12,14 +12,27 @@ class ContactMail extends Mailable
 
     public $data;
 
+    /**
+     * Create a new message instance.
+     */
     public function __construct($data)
     {
+        // $data will be the Contact model instance
         $this->data = $data;
     }
 
+    /**
+     * Build the message.
+     */
     public function build()
     {
-        return $this->subject('New Contact Message from Diamond Site')
-                    ->view('emails.contact');
+        return $this->subject('Contact US - ' . $this->data->subject)
+                    ->view('emails.contact')
+                    ->with([
+                        'name'    => $this->data->name,
+                        'email'   => $this->data->email,
+                        'phone'   => $this->data->phone,
+                        'message' => $this->data->message,
+                    ]);
     }
 }
